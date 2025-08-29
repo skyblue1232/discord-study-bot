@@ -60,7 +60,7 @@
 //   });
 // });
 
-// client.login("MTQxMDg1MTgzOTU2NTYyNzQwMg.Gj2DN3.XKzQ7ljBHUUlTlAoUQO1iAftuuBru4h-qGBuis");
+// client.login(process.env.DISCORD_TOKEN);
 
 
 import { Client, GatewayIntentBits } from "discord.js";
@@ -93,5 +93,5 @@ client.once("ready", () => {
   });
 });
 
-client.login("MTQxMDg1MTgzOTU2NTYyNzQwMg.Gj2DN3.XKzQ7ljBHUUlTlAoUQO1iAftuuBru4h-qGBuis");
+client.login(process.env.DISCORD_TOKEN);
 
