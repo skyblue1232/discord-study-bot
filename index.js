@@ -64,6 +64,7 @@
 
 
 import { Client, GatewayIntentBits } from "discord.js";
+import "dotenv/config";
 import cron from "node-cron";
 
 const client = new Client({
@@ -81,12 +82,12 @@ const TEAMS = [
 client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}`);
 
-  cron.schedule("30 15 * * *", async () => {
+  cron.schedule("44 15 * * *", async () => {
     for (const team of TEAMS) {
       const thread = await client.channels.fetch(team.id);
       if (thread && thread.isThread()) {
         await thread.send(
-          `[테스트 알림] ${team.name} 스터디 알림봇이 정상적으로 작동합니다! (지금은 오후 3시 30분)`
+          `📢 [${team.name}] 스터디 과제 제출까지 하루 남았습니다!\n아직 제출하지 못한 멤버분들은 내일까지 꼭 제출 부탁드려요 😊`
         );
       }
     }
