@@ -1,60 +1,5 @@
-import { Client, GatewayIntentBits } from "discord.js";
-import cron from "node-cron";
-
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-  ],
-});
-
-// 팀별 스레드 ID + 마감 요일 (0=일, 1=월, ... 6=토)
-const TEAMS = [
-  { id: "1410850849772667001", name: "팀 1", dueDay: 1 }, // 월요일 마감
-  { id: "1410850849772667002", name: "팀 2", dueDay: 2 }, // 화요일 마감
-  { id: "1410850849772667003", name: "팀 3", dueDay: 3 }, // 수요일 마감
-  { id: "1410850849772667004", name: "팀 4", dueDay: 4 }, // 목요일 마감
-  { id: "1410850849772667005", name: "팀 5", dueDay: 5 }, // 금요일 마감
-  { id: "1410850849772667006", name: "팀 6", dueDay: 6 }, // 토요일 마감
-  { id: "1410850849772667007", name: "팀 7", dueDay: 0 }, // 일요일 마감
-  { id: "1410850849772667008", name: "팀 8", dueDay: 1 },
-  { id: "1410850849772667009", name: "팀 9", dueDay: 2 },
-  { id: "1410850849772667010", name: "팀 10", dueDay: 3 },
-  { id: "1410850849772667011", name: "팀 11", dueDay: 4 },
-  { id: "1410850849772667012", name: "팀 12", dueDay: 5 },
-  { id: "1410850849772667013", name: "팀 13", dueDay: 6 },
-  { id: "1410850849772667014", name: "팀 14", dueDay: 0 },
-  { id: "1410850849772667015", name: "팀 15", dueDay: 1 },
-  { id: "1410850849772667016", name: "팀 16", dueDay: 2 },
-  { id: "1410850849772667017", name: "팀 17", dueDay: 3 },
-  { id: "1410850849772667018", name: "팀 18", dueDay: 4 },
-  { id: "1410850849772667019", name: "팀 19", dueDay: 5 },
-  { id: "1410850849772667020", name: "팀 20", dueDay: 6 },
-];
-
-client.once("ready", () => {
-  console.log(`Logged in as ${client.user.tag}`);
-
-  TEAMS.forEach((team) => {
-    // 하루 전 알림 (아침 10시)
-    const reminderDay = (team.dueDay + 6) % 7;
-    cron.schedule(`0 10 * * ${reminderDay}`, async () => {
-      const thread = await client.channels.fetch(team.id);
-      if (thread && thread.isThread()) {
-        await thread.send(
-          `📢 ${team.name} 스터디 과제 제출까지 하루 남았습니다!\n아직 제출하지 못한 멤버분들은 내일까지 꼭 제출 부탁드려요 😊`
-        );
-      }
-    });
-  });
-});
-
-client.login(process.env.DISCORD_TOKEN);
-
-
+// 실제 사용할 코드
 // import { Client, GatewayIntentBits } from "discord.js";
-// import "dotenv/config";
 // import cron from "node-cron";
 
 // const client = new Client({
@@ -65,24 +10,84 @@ client.login(process.env.DISCORD_TOKEN);
 //   ],
 // });
 
+// // 팀별 스레드 ID + 마감 요일 (0=일, 1=월, ... 6=토)
 // const TEAMS = [
-//   { id: "1410850849772667003", name: "팀 3" },
+//   { id: "1410850849772667001", name: "팀 1", dueDay: 1 }, // 월요일 마감
+//   { id: "1410850849772667002", name: "팀 2", dueDay: 2 }, // 화요일 마감
+//   { id: "1410850849772667003", name: "팀 3", dueDay: 3 }, // 수요일 마감
+//   { id: "1410850849772667004", name: "팀 4", dueDay: 4 }, // 목요일 마감
+//   { id: "1410850849772667005", name: "팀 5", dueDay: 5 }, // 금요일 마감
+//   { id: "1410850849772667006", name: "팀 6", dueDay: 6 }, // 토요일 마감
+//   { id: "1410850849772667007", name: "팀 7", dueDay: 0 }, // 일요일 마감
+//   { id: "1410850849772667008", name: "팀 8", dueDay: 1 },
+//   { id: "1410850849772667009", name: "팀 9", dueDay: 2 },
+//   { id: "1410850849772667010", name: "팀 10", dueDay: 3 },
+//   { id: "1410850849772667011", name: "팀 11", dueDay: 4 },
+//   { id: "1410850849772667012", name: "팀 12", dueDay: 5 },
+//   { id: "1410850849772667013", name: "팀 13", dueDay: 6 },
+//   { id: "1410850849772667014", name: "팀 14", dueDay: 0 },
+//   { id: "1410850849772667015", name: "팀 15", dueDay: 1 },
+//   { id: "1410850849772667016", name: "팀 16", dueDay: 2 },
+//   { id: "1410850849772667017", name: "팀 17", dueDay: 3 },
+//   { id: "1410850849772667018", name: "팀 18", dueDay: 4 },
+//   { id: "1410850849772667019", name: "팀 19", dueDay: 5 },
+//   { id: "1410850849772667020", name: "팀 20", dueDay: 6 },
 // ];
 
 // client.once("ready", () => {
 //   console.log(`Logged in as ${client.user.tag}`);
 
-//   cron.schedule("44 15 * * *", async () => {
-//     for (const team of TEAMS) {
+//   TEAMS.forEach((team) => {
+//     // 하루 전 알림 (아침 10시)
+//     const reminderDay = (team.dueDay + 6) % 7;
+//     cron.schedule(`0 10 * * ${reminderDay}`, async () => {
 //       const thread = await client.channels.fetch(team.id);
 //       if (thread && thread.isThread()) {
 //         await thread.send(
-//           `📢 [${team.name}] 스터디 과제 제출까지 하루 남았습니다!\n아직 제출하지 못한 멤버분들은 내일까지 꼭 제출 부탁드려요 😊`
+//           `📢 ${team.name} 스터디 과제 제출까지 하루 남았습니다!\n아직 제출하지 못한 멤버분들은 내일까지 꼭 제출 부탁드려요 😊`
 //         );
 //       }
-//     }
+//     });
 //   });
 // });
 
 // client.login(process.env.DISCORD_TOKEN);
+
+
+
+// --------------------------------------------------------
+// 테스트용 코드
+
+import { Client, GatewayIntentBits } from "discord.js";
+import "dotenv/config";
+import cron from "node-cron";
+
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
+});
+
+const TEAMS = [
+  { id: "1410850849772667003", name: "팀 3" },
+];
+
+client.once("ready", () => {
+  console.log(`Logged in as ${client.user.tag}`);
+
+  cron.schedule("11 14 * * *", async () => {
+    for (const team of TEAMS) {
+      const thread = await client.channels.fetch(team.id);
+      if (thread && thread.isThread()) {
+        await thread.send(
+          `📢 [${team.name}] 스터디 과제 제출까지 하루 남았습니다!\n아직 제출하지 못한 멤버분들은 내일까지 꼭 제출 부탁드려요 😊`
+        );
+      }
+    }
+  });
+});
+
+client.login(process.env.DISCORD_TOKEN);
 
